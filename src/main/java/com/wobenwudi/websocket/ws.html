@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+<form onsubmit="return false">
+    <textarea name="message" style="height: 300px;width: 300px"></textarea>
+    <input type="button" value="发送消息" onclick="send(this.form.message.value)">
+    <textarea id="respText" style="height: 300px;width: 300px"></textarea>
+    <input type="button" value="清空内容" onclick="document.querySelector('#respText').value=''"></input>
+</form>
+
+</body>
+
+<script>
+    let socket = null;
+    if (!window.WebSocket) {
+        alert("当前浏览器不支持WebSosket")
+    } else {
+        socket = new WebSocket("ws://localhost:815/");
+
+        socket.onmessage = function (ev) {
+            document.querySelector("#respText").value += ev.data + "\n";
+        }
+
+        socket.onopen = function (ev) {
+            document.querySelector("#respText").value += "连接开启~" + "\n";
+        }
+
+        socket.onclose = function (ev) {
+            document.querySelector("#respText").value += "连接关闭~" + "\n";
+
+        }
+    }
+
+
+    function send(message) {
+        if (socket == null) {
+            return;
+        }
+
+        if (WebSocket.OPEN == socket.readyState) {
+            socket.send(message)
+        }else{
+            alert("连接未开启！")
+        }
+
+
+    }
+
+
+</script>
+</html>
