@@ -54,7 +54,7 @@ public class Test {
                 taoZi /= 2;
 //                taoZi >>= 1;
                 taoZi -= 1;
-                if (taoZi < 0) break;
+                if (taoZi < 0) break; // 加速
             }
             if (taoZi == 1) {
                 break;
